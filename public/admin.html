@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xmaxify Admin Panel | WhatsApp AI & Client Hunter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+    .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-input { background: rgba(11, 15, 25, 0.8); border: 1px solid rgba(255, 255, 255, 0.12); }
+    .chat-bubble-me { background: #065f46; color: #ecfdf5; border-radius: 1rem 1rem 0 1rem; }
+    .chat-bubble-client { background: #1e293b; color: #f8fafc; border-radius: 1rem 1rem 1rem 0; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="glass-card border-b border-slate-800 sticky top-0 z-40 px-6 py-3.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <!-- Logo -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20">
+          X
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-white flex items-center gap-2">
+            Xmaxify Admin Control
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono font-medium">Auto-Pilot Active</span>
+          </h1>
+          <p class="text-xs text-slate-400">Lead Generation & Automated WhatsApp Sales Negotiation for 50% Advance</p>
+        </div>
+      </div>
+
+      <!-- Action Badges -->
+      <div class="flex items-center flex-wrap gap-2.5">
+        <!-- WhatsApp Status Pill -->
+        <button onclick="openWhatsAppModal()" id="waStatusPill" class="px-3.5 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-2 border transition bg-red-500/10 text-red-400 border-red-500/30">
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+          <span id="waStatusText">WhatsApp: Checking...</span>
+        </button>
+
+        <!-- AI Toggle -->
+        <button onclick="toggleAI()" id="aiToggleBtn" class="px-3 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-1.5 border transition bg-emerald-500/10 text-emerald-300 border-emerald-500/30">
+          <i class="fa-solid fa-robot"></i>
+          <span id="aiToggleText">AI Auto-Reply: ON</span>
+        </button>
+
+        <!-- Live Chats -->
+        <button onclick="openChatsModal()" class="px-3 py-1.5 text-xs font-semibold bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-xl flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-comments"></i> Live Chats
+        </button>
+
+        <!-- Playbook -->
+        <button onclick="openPlaybook()" class="px-3 py-1.5 text-xs font-semibold bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-xl flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-shield-halved"></i> 50% Playbook
+        </button>
+
+        <!-- Settings -->
+        <button onclick="openSettings()" class="px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl border border-slate-700 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-gear"></i> Settings
+        </button>
+
+        <!-- View Public Site -->
+        <a href="/" target="_blank" class="px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl border border-slate-700 flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-globe"></i> View Site
+        </a>
+
+        <!-- Logout -->
+        <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-semibold bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/30 rounded-xl flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Auto-Outreach Banner (Visible during outreach) -->
+  <div id="outreachBanner" class="hidden max-w-7xl mx-auto w-full px-6 pt-4">
+    <div class="p-3.5 bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/40 rounded-2xl flex items-center justify-between text-xs text-emerald-200">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-paper-plane text-emerald-400 fa-bounce"></i>
+        <span>
+          <b>AI Auto-Outreach Active:</b> <span id="outreachProgress">Sent 0/0 pitches...</span> 
+          <span class="text-slate-400 ml-2" id="outreachCurrentTarget"></span>
+        </span>
+      </div>
+      <button onclick="stopAutoOutreach()" class="px-3 py-1 bg-red-600/30 hover:bg-red-600/50 text-red-300 border border-red-500/40 rounded-lg text-xs font-semibold transition">
+        Stop Outreach
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto w-full px-6 py-6 flex-1 space-y-6">
+
+    <!-- Metrics Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass-card rounded-2xl p-5 border-l-4 border-blue-500">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium text-slate-400">Total Leads Found</span>
+          <i class="fa-solid fa-users text-blue-400"></i>
+        </div>
+        <p id="statTotal" class="text-2xl font-bold text-white mt-2">0</p>
+        <span class="text-[11px] text-slate-500">Businesses in database</span>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 border-l-4 border-red-500">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium text-slate-400">No Website (Hot Opportunities)</span>
+          <i class="fa-solid fa-triangle-exclamation text-red-400"></i>
+        </div>
+        <p id="statNoWebsite" class="text-2xl font-bold text-red-400 mt-2">0</p>
+        <span class="text-[11px] text-slate-500">Target for website sales</span>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 border-l-4 border-amber-500">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium text-slate-400">Pitched / In Talk</span>
+          <i class="fa-brands fa-whatsapp text-amber-400 text-base"></i>
+        </div>
+        <p id="statContacted" class="text-2xl font-bold text-amber-400 mt-2">0</p>
+        <span class="text-[11px] text-slate-500">WhatsApp message sent</span>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 border-l-4 border-emerald-500">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium text-slate-400">50% Advance Received 💰</span>
+          <i class="fa-solid fa-money-bill-wave text-emerald-400"></i>
+        </div>
+        <p id="statAdvance" class="text-2xl font-bold text-emerald-400 mt-2">0</p>
+        <span class="text-[11px] text-slate-500">Projects closed & deposit paid</span>
+      </div>
+    </div>
+
+    <!-- Scraper Panel -->
+    <div class="glass-card rounded-2xl p-6 shadow-xl">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-magnifying-glass text-emerald-400"></i>
+            Find Pakistani Businesses Without Websites
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            City aur category choose karein, leads extract karein, aur AI ke zariye automatically WhatsApp par reach out karein.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 border border-slate-800 px-3 py-2 rounded-xl cursor-pointer">
+            <input type="checkbox" id="onlyNoWebsite" checked class="accent-emerald-500 rounded w-4 h-4">
+            <span>Sirf <b>Baghair Website</b> wale</span>
+          </label>
+          <button onclick="startAutoOutreachAll()" class="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-500/20 flex items-center gap-2 transition">
+            <i class="fa-solid fa-bolt"></i> Auto-Pitch All New Leads
+          </button>
+        </div>
+      </div>
+
+      <form id="scrapeForm" class="grid grid-cols-1 md:grid-cols-4 gap-4" onsubmit="handleScrape(event)">
+        <!-- City Selector -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5">1. City (Sheher)</label>
+          <select id="scrapeCity" class="glass-input w-full rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+            <option value="lahore">Lahore (لاہور)</option>
+            <option value="karachi">Karachi (کراچی)</option>
+            <option value="islamabad">Islamabad (اسلام آباد)</option>
+            <option value="rawalpindi">Rawalpindi (راولپنڈی)</option>
+            <option value="faisalabad">Faisalabad (فیصل آباد)</option>
+            <option value="sialkot">Sialkot (سیالکوٹ)</option>
+            <option value="multan">Multan (ملتان)</option>
+            <option value="gujranwala">Gujranwala (گوجرانوالہ)</option>
+            <option value="peshawar">Peshawar (پشاور)</option>
+            <option value="">Poora Pakistan (All)</option>
+          </select>
+        </div>
+
+        <!-- Niche / Category -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5">2. Business Category</label>
+          <select id="scrapeCategory" class="glass-input w-full rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+            <option value="estate-agents">🏢 Real Estate / Property Dealers (High Ticket)</option>
+            <option value="construction-services">⚡ Solar, Builders & Contractors</option>
+            <option value="doctors-and-clinics">🏥 Doctors, Clinics & Dentists</option>
+            <option value="vehicle-services">🚗 Car Showrooms & Auto Services</option>
+            <option value="restaurants">🍽️ Restaurants & Cafes</option>
+            <option value="schools">🎓 Academies & Institutes</option>
+            <option value="employment-agencies">✈️ Travel, Umrah & Visa Agencies</option>
+            <option value="lawyers">⚖️ Advocates & Legal Consultants</option>
+          </select>
+        </div>
+
+        <!-- Max Leads & Page -->
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Batch Size</label>
+            <select id="scrapeMax" class="glass-input w-full rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+              <option value="10">10 Leads</option>
+              <option value="20" selected>20 Leads</option>
+              <option value="30">30 Leads</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1.5">Page</label>
+            <input type="number" id="scrapePage" value="1" min="1" max="50" class="glass-input w-full rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex items-end">
+          <button type="submit" id="scrapeBtn" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold py-2.5 px-4 rounded-xl shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition disabled:opacity-50">
+            <i class="fa-solid fa-crosshairs"></i>
+            <span>Search Leads Now</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Scraping Status Alert -->
+      <div id="scrapeNotice" class="hidden mt-4 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs text-emerald-300 flex items-center justify-between">
+        <span id="noticeText" class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-notch fa-spin"></i> Scraper chal raha hai, live business phone numbers extract ho rahe hain...
+        </span>
+      </div>
+    </div>
+
+    <!-- Leads Management & CRM Table -->
+    <div class="glass-card rounded-2xl overflow-hidden shadow-xl">
+      <div class="px-6 py-4 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-900/40">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-blue-400"></i>
+            Extracted Leads & WhatsApp Pipeline
+          </h3>
+          <p class="text-xs text-slate-400">AI automatically talks to interested clients to secure 50% advance</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="text" id="searchInput" oninput="filterTable()" placeholder="Search by name, phone, city..." class="glass-input px-3 py-1.5 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 w-60">
+          <select id="statusFilter" onchange="filterTable()" class="glass-input px-3 py-1.5 rounded-lg text-xs text-white focus:outline-none">
+            <option value="all">All Statuses</option>
+            <option value="New">New</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Interested">Interested</option>
+            <option value="Advance Agreed">Advance Agreed</option>
+            <option value="Advance Received">Advance Received</option>
+          </select>
+          <a href="/api/export" class="px-3 py-1.5 text-xs font-semibold bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/30 rounded-lg flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-file-excel"></i> Export CSV
+          </a>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-900/80 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
+            <tr>
+              <th class="py-3.5 px-4 font-semibold">Business & Owner</th>
+              <th class="py-3.5 px-4 font-semibold">City / Location</th>
+              <th class="py-3.5 px-4 font-semibold">WhatsApp / Mobile</th>
+              <th class="py-3.5 px-4 font-semibold">Website Status</th>
+              <th class="py-3.5 px-4 font-semibold">Funnel Status</th>
+              <th class="py-3.5 px-4 font-semibold text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="leadsTableBody" class="divide-y divide-slate-800">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden py-16 text-center">
+        <div class="w-16 h-16 rounded-full bg-slate-800/80 mx-auto flex items-center justify-center text-slate-500 mb-3">
+          <i class="fa-solid fa-inbox text-2xl"></i>
+        </div>
+        <p class="text-sm font-semibold text-slate-300">Abhi koi leads nahi hain</p>
+        <p class="text-xs text-slate-500 mt-1">Upar "Search Leads Now" button daba kar Pakistani businesses scrape karein!</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- WhatsApp Connect & QR Modal -->
+  <div id="waModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full rounded-2xl p-6 shadow-2xl border border-slate-700 text-center space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
+          Connect WhatsApp
+        </h3>
+        <button onclick="closeWhatsAppModal()" class="text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- QR Display Area -->
+      <div id="qrContainer" class="p-4 bg-white rounded-2xl inline-block mx-auto shadow-inner">
+        <div id="qrLoading" class="w-56 h-56 flex flex-col items-center justify-center text-slate-700 gap-2">
+          <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-600"></i>
+          <span class="text-xs font-semibold text-slate-600">QR Code generate ho raha hai...</span>
+        </div>
+        <img id="qrImage" class="w-56 h-56 hidden object-contain" alt="WhatsApp QR Code">
+      </div>
+
+      <!-- Instructions -->
+      <div class="text-left text-xs text-slate-300 space-y-1.5 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+        <p class="font-bold text-emerald-400 mb-1">Apna WhatsApp Kaise Connect Karein:</p>
+        <p>1. Apne phone mein <b>WhatsApp</b> open karein.</p>
+        <p>2. Settings ➔ <b>Linked Devices</b> par click karein.</p>
+        <p>3. <b>"Link a Device"</b> par click kar ke upar wala QR code scan karein.</p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-2 pt-2">
+        <button onclick="initiateWhatsAppConnect()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-600/30 transition">
+          <i class="fa-solid fa-arrows-rotate"></i> Refresh QR Code
+        </button>
+        <button onclick="disconnectWhatsApp()" class="px-4 py-2.5 bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/30 font-bold text-xs rounded-xl transition">
+          Disconnect
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live WhatsApp Chats Drawer Modal -->
+  <div id="chatsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-4xl w-full h-[85vh] rounded-2xl shadow-2xl border border-slate-700 flex flex-col overflow-hidden">
+      <!-- Header -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+        <div class="flex items-center gap-2">
+          <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
+          <h3 class="text-sm font-bold text-white">Live WhatsApp Conversations & AI Log</h3>
+        </div>
+        <button onclick="closeChatsModal()" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Main Chat Body -->
+      <div class="flex-1 flex overflow-hidden">
+        <div id="chatThreadsList" class="w-1/3 border-r border-slate-800 overflow-y-auto divide-y divide-slate-800/60 bg-slate-900/40">
+        </div>
+        <div class="flex-1 flex flex-col bg-slate-950/50">
+          <div id="activeChatHeader" class="p-3 border-b border-slate-800 text-xs font-bold text-slate-300 flex items-center justify-between">
+            <span>Select a conversation from left</span>
+          </div>
+          <div id="activeChatMessages" class="flex-1 p-4 overflow-y-auto space-y-3">
+          </div>
+          <div class="p-3 border-t border-slate-800 flex gap-2">
+            <input type="text" id="manualChatInput" placeholder="Type a message or let AI handle..." class="glass-input flex-1 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+            <button onclick="sendManualChat()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition">
+              <i class="fa-solid fa-paper-plane"></i> Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WhatsApp Pitch Modal -->
+  <div id="pitchModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-2xl w-full rounded-2xl p-6 shadow-2xl border border-slate-700 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
+            WhatsApp Pitch Generator
+          </h3>
+          <p id="pitchTargetInfo" class="text-xs text-slate-400 mt-0.5">Customized Roman Urdu script ready to send</p>
+        </div>
+        <button onclick="closePitchModal()" class="text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-300 mb-1">Select Pitch Strategy:</label>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <button onclick="selectTemplate(1)" id="tplBtn1" class="p-2.5 rounded-xl border text-xs text-left font-medium transition bg-emerald-500/10 border-emerald-500/40 text-emerald-300">
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-fire text-amber-400"></i> Competitor Hook</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Competitors website se customer le rahe hain</div>
+          </button>
+          <button onclick="selectTemplate(2)" id="tplBtn2" class="p-2.5 rounded-xl border border-slate-800 text-xs text-left font-medium transition hover:border-slate-700 text-slate-300">
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-gift text-purple-400"></i> Free Mockup</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">1-page demo free bana kar dikhana</div>
+          </button>
+          <button onclick="selectTemplate(3)" id="tplBtn3" class="p-2.5 rounded-xl border border-slate-800 text-xs text-left font-medium transition hover:border-slate-700 text-slate-300">
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-chart-line text-blue-400"></i> Google Ranking</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Google Maps pe no.1 pe laana</div>
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="text-xs font-semibold text-slate-300">Message Preview (Editable):</label>
+          <span class="text-[11px] text-emerald-400 font-mono">Pakistani Tone &bull; High Response Rate</span>
+        </div>
+        <textarea id="pitchTextArea" rows="7" class="glass-input w-full rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 leading-relaxed font-sans"></textarea>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button onclick="sendPitchDirectFromBot()" id="sendBotBtn" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-emerald-600/30 flex items-center gap-2 transition">
+          <i class="fa-solid fa-robot"></i> Send via Connected WhatsApp
+        </button>
+        <button onclick="openWhatsAppDirect()" id="openWaBtn" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 flex items-center gap-2 transition">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in WhatsApp Web
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 50% Advance Playbook Modal -->
+  <div id="playbookModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-3xl w-full rounded-2xl p-6 shadow-2xl border border-slate-700 max-h-[85vh] overflow-y-auto space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 sticky top-0 bg-slate-900/90 py-1">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-handshake-simple text-amber-400"></i>
+            50% Advance Closing Formula (Pakistan Edition)
+          </h3>
+          <p class="text-xs text-slate-400">Pakistani clients se 50% advance lene ka tested tareeqa</p>
+        </div>
+        <button onclick="closePlaybook()" class="text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
+          <h4 class="font-bold text-amber-300 text-sm mb-1">1. Pehle Value, Phir Paise (The Golden Rule)</h4>
+          <p>Pakistani client ko shuru mein kabhi na bolein ke "25,000 lagenge pehle advance do". Jab client WhatsApp par aaye, unhe bolein:</p>
+          <div class="p-2.5 bg-black/40 rounded-lg text-emerald-300 font-mono text-[11px] mt-2 border border-emerald-900/40">
+            "Bhai aap fikar na karein. Pehle main aapko aapke business ka 1-page design concept (homepage) bana kar dikhata hoon. Agar aapko pasand aaye tab hum finalize karenge."
+          </div>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
+          <h4 class="font-bold text-blue-300 text-sm mb-1">2. 50% Advance ko Frame Kaise Karein?</h4>
+          <p>Client ko batayein ke 50% advance unki apni cheezon ke liye zaroori hai:</p>
+          <div class="p-2.5 bg-black/40 rounded-lg text-blue-300 font-mono text-[11px] mt-2 border border-blue-900/40">
+            "Project start karne ke liye 50% advance required hota hai kyun ke isme aapki Official .com Domain, Cloud Hosting Server, aur SSL Security purchase karni hoti hai jo direct aapke business ke naam register hoti hai. Baqi 50% aap website live hone aur check karne ke baad dein."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full rounded-2xl p-6 shadow-2xl border border-slate-700 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-gear text-slate-400"></i> Settings & Personalization
+        </h3>
+        <button onclick="closeSettings()" class="text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Admin Username</label>
+          <input type="text" id="cfgUsername" class="glass-input w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Admin Password</label>
+          <input type="password" id="cfgPassword" class="glass-input w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Agency Name</label>
+          <input type="text" id="cfgAgency" class="glass-input w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="Xmaxify">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Aapka WhatsApp Number (with 92)</label>
+          <input type="text" id="cfgWhatsApp" class="glass-input w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="923001234567">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Standard Package Price</label>
+          <input type="text" id="cfgPrice" class="glass-input w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="25,000 PKR">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">Google Gemini API Key (Optional)</label>
+          <input type="password" id="cfgApiKey" class="glass-input w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="saveSettings()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition">
+          Save Settings
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    let leadsData = [];
+    let currentLead = null;
+    let selectedTemplateIndex = 1;
+    let waConnected = false;
+    let pollInterval = null;
+    let allChats = {};
+    let activeChatJid = null;
+    let userSettings = {};
+
+    function getAuthHeaders() {
+      const token = localStorage.getItem('xmaxify_token');
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + (token || '')
+      };
+    }
+
+    async function checkAuth() {
+      const token = localStorage.getItem('xmaxify_token');
+      if (!token) {
+        window.location.href = '/login';
+        return false;
+      }
+      try {
+        const res = await fetch('/api/auth/check', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (!data.authenticated) {
+          localStorage.removeItem('xmaxify_token');
+          window.location.href = '/login';
+          return false;
+        }
+        return true;
+      } catch (e) {
+        return true;
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('xmaxify_token');
+      window.location.href = '/';
+    }
+
+    async function init() {
+      const isAuthed = await checkAuth();
+      if (!isAuthed) return;
+
+      await fetchSettings();
+      await fetchLeads();
+      checkWhatsAppStatus();
+      pollInterval = setInterval(checkWhatsAppStatus, 3000);
+    }
+
+    async function fetchSettings() {
+      try {
+        const res = await fetch('/api/settings', { headers: getAuthHeaders() });
+        if (res.ok) {
+          userSettings = await res.json();
+          document.getElementById('cfgUsername').value = userSettings.adminUsername || 'admin';
+          document.getElementById('cfgPassword').value = userSettings.adminPassword || 'xmaxify2026';
+          document.getElementById('cfgAgency').value = userSettings.agencyName || 'Xmaxify';
+          document.getElementById('cfgWhatsApp').value = userSettings.yourWhatsApp || '';
+          document.getElementById('cfgPrice').value = userSettings.defaultPackagePrice || '';
+          document.getElementById('cfgApiKey').value = userSettings.geminiApiKey || '';
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function saveSettings() {
+      userSettings.adminUsername = document.getElementById('cfgUsername').value.trim();
+      userSettings.adminPassword = document.getElementById('cfgPassword').value.trim();
+      userSettings.agencyName = document.getElementById('cfgAgency').value.trim();
+      userSettings.yourWhatsApp = document.getElementById('cfgWhatsApp').value.trim();
+      userSettings.defaultPackagePrice = document.getElementById('cfgPrice').value.trim();
+      userSettings.geminiApiKey = document.getElementById('cfgApiKey').value.trim();
+
+      await fetch('/api/settings', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(userSettings)
+      });
+      closeSettings();
+      alert('Settings saved successfully!');
+    }
+
+    async function checkWhatsAppStatus() {
+      try {
+        const res = await fetch('/api/whatsapp/status', { headers: getAuthHeaders() });
+        if (res.status === 401) {
+          handleLogout();
+          return;
+        }
+        const data = await res.json();
+        
+        const pill = document.getElementById('waStatusPill');
+        const text = document.getElementById('waStatusText');
+        const qrImage = document.getElementById('qrImage');
+        const qrLoading = document.getElementById('qrLoading');
+
+        if (data.status === 'connected') {
+          waConnected = true;
+          pill.className = 'px-3.5 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-2 border transition bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
+          text.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> WhatsApp: Online (${data.userJid || 'Connected'})`;
+          qrLoading.classList.add('hidden');
+          qrImage.classList.add('hidden');
+        } else if (data.status === 'scan_needed' && data.qrCode) {
+          waConnected = false;
+          pill.className = 'px-3.5 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-2 border transition bg-amber-500/10 text-amber-400 border-amber-500/30';
+          text.innerHTML = `<i class="fa-solid fa-qrcode text-amber-400"></i> Scan WhatsApp QR`;
+          qrLoading.classList.add('hidden');
+          qrImage.src = data.qrCode;
+          qrImage.classList.remove('hidden');
+        } else {
+          waConnected = false;
+          pill.className = 'px-3.5 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-2 border transition bg-red-500/10 text-red-400 border-red-500/30';
+          text.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500"></span> WhatsApp: Disconnected`;
+        }
+
+        const banner = document.getElementById('outreachBanner');
+        if (data.autoOutreach && data.autoOutreach.active) {
+          banner.classList.remove('hidden');
+          document.getElementById('outreachProgress').innerText = `Sent ${data.autoOutreach.sent}/${data.autoOutreach.total} pitches...`;
+          document.getElementById('outreachCurrentTarget').innerText = `Target: ${data.autoOutreach.current || ''}`;
+        } else {
+          banner.classList.add('hidden');
+        }
+
+        const aiBtn = document.getElementById('aiToggleBtn');
+        const aiText = document.getElementById('aiToggleText');
+        if (data.aiEnabled) {
+          aiBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-1.5 border transition bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
+          aiText.innerText = 'AI Auto-Reply: ON';
+        } else {
+          aiBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-1.5 border transition bg-slate-800 text-slate-400 border-slate-700';
+          aiText.innerText = 'AI Auto-Reply: OFF';
+        }
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function initiateWhatsAppConnect() {
+      const qrLoading = document.getElementById('qrLoading');
+      const qrImage = document.getElementById('qrImage');
+      qrLoading.classList.remove('hidden');
+      qrImage.classList.add('hidden');
+      await fetch('/api/whatsapp/connect', { method: 'POST', headers: getAuthHeaders() });
+    }
+
+    async function disconnectWhatsApp() {
+      if (!confirm('WhatsApp disconnect karna chahte hain?')) return;
+      await fetch('/api/whatsapp/disconnect', { method: 'POST', headers: getAuthHeaders() });
+      checkWhatsAppStatus();
+    }
+
+    async function toggleAI() {
+      await fetch('/api/whatsapp/toggle-ai', { method: 'POST', headers: getAuthHeaders() });
+      checkWhatsAppStatus();
+    }
+
+    async function fetchLeads() {
+      try {
+        const res = await fetch('/api/leads', { headers: getAuthHeaders() });
+        leadsData = await res.json();
+        updateStats();
+        renderTable(leadsData);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').innerText = leadsData.length;
+      document.getElementById('statNoWebsite').innerText = leadsData.filter(l => !l.hasWebsite).length;
+      document.getElementById('statContacted').innerText = leadsData.filter(l => l.status === 'Contacted' || l.status === 'Interested' || l.status === 'Advance Agreed').length;
+      document.getElementById('statAdvance').innerText = leadsData.filter(l => l.status === 'Advance Received').length;
+    }
+
+    function renderTable(leads) {
+      const tbody = document.getElementById('leadsTableBody');
+      const empty = document.getElementById('emptyState');
+      tbody.innerHTML = '';
+
+      if (!leads || leads.length === 0) {
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+
+      leads.forEach(lead => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/40 transition';
+
+        const statusClass = {
+          'New': 'bg-blue-500/10 text-blue-400 border border-blue-500/30',
+          'Contacted': 'bg-amber-500/10 text-amber-400 border border-amber-500/30',
+          'Interested': 'bg-purple-500/10 text-purple-400 border border-purple-500/30',
+          'Advance Agreed': 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold',
+          'Advance Received': 'bg-emerald-500 text-slate-950 font-bold',
+          'Closed': 'bg-slate-800 text-slate-400'
+        }[lead.status || 'New'] || 'bg-slate-800 text-slate-300';
+
+        tr.innerHTML = `
+          <td class="py-3 px-4">
+            <div class="font-bold text-white text-sm">${lead.name}</div>
+            <div class="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
+              <i class="fa-solid fa-user text-slate-500"></i> ${lead.contactPerson || 'Business Owner'}
+            </div>
+          </td>
+          <td class="py-3 px-4">
+            <div class="text-slate-200 font-medium">${lead.city || 'Pakistan'}</div>
+            <div class="text-[10px] text-slate-500 truncate max-w-xs">${lead.address || ''}</div>
+          </td>
+          <td class="py-3 px-4">
+            <div class="font-mono text-slate-200 font-semibold">${lead.mobile}</div>
+            ${lead.whatsapp ? `<span class="inline-flex items-center gap-1 text-[10px] text-emerald-400 font-medium mt-0.5"><i class="fa-brands fa-whatsapp"></i> Verified WhatsApp</span>` : `<span class="text-[10px] text-slate-500">Landline/Phone</span>`}
+          </td>
+          <td class="py-3 px-4">
+            ${!lead.hasWebsite ? 
+              `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-500/10 text-red-400 border border-red-500/30"><i class="fa-solid fa-xmark"></i> No Website (Target)</span>` : 
+              `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-medium bg-slate-800 text-slate-400"><i class="fa-solid fa-check"></i> Has Website</span>`
+            }
+          </td>
+          <td class="py-3 px-4">
+            <select onchange="updateLeadStatus('${lead.id}', this.value)" class="glass-input rounded-lg px-2 py-1 text-xs font-semibold ${statusClass}">
+              <option value="New" ${lead.status === 'New' ? 'selected' : ''}>New Lead</option>
+              <option value="Contacted" ${lead.status === 'Contacted' ? 'selected' : ''}>Contacted (WhatsApp)</option>
+              <option value="Interested" ${lead.status === 'Interested' ? 'selected' : ''}>Interested (Talking)</option>
+              <option value="Advance Agreed" ${lead.status === 'Advance Agreed' ? 'selected' : ''}>🤝 Advance Agreed</option>
+              <option value="Advance Received" ${lead.status === 'Advance Received' ? 'selected' : ''}>💰 50% Advance Received</option>
+              <option value="Closed" ${lead.status === 'Closed' ? 'selected' : ''}>Website Live</option>
+            </select>
+          </td>
+          <td class="py-3 px-4 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="openPitchModal('${lead.id}')" class="px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 font-semibold rounded-lg text-xs flex items-center gap-1.5 transition">
+                <i class="fa-brands fa-whatsapp text-emerald-400"></i> Pitch
+              </button>
+              <button onclick="deleteLead('${lead.id}')" class="p-1.5 text-slate-500 hover:text-red-400 transition" title="Delete lead">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const status = document.getElementById('statusFilter').value;
+
+      const filtered = leadsData.filter(l => {
+        const matchesQ = (l.name && l.name.toLowerCase().includes(q)) ||
+                         (l.contactPerson && l.contactPerson.toLowerCase().includes(q)) ||
+                         (l.mobile && l.mobile.includes(q)) ||
+                         (l.city && l.city.toLowerCase().includes(q));
+        const matchesStatus = status === 'all' || (l.status || 'New') === status;
+        return matchesQ && matchesStatus;
+      });
+
+      renderTable(filtered);
+    }
+
+    async function handleScrape(e) {
+      e.preventDefault();
+      const city = document.getElementById('scrapeCity').value;
+      const category = document.getElementById('scrapeCategory').value;
+      const maxResults = document.getElementById('scrapeMax').value;
+      const pageNum = document.getElementById('scrapePage').value;
+      const onlyNoWebsite = document.getElementById('onlyNoWebsite').checked;
+
+      const btn = document.getElementById('scrapeBtn');
+      const notice = document.getElementById('scrapeNotice');
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Extracting...`;
+      notice.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/scrape', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ city, category, maxResults, pageNum, onlyNoWebsite })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(`Zabardast! ${data.data.results.length} leads nikaal li hain (${data.data.addedCount} new leads database mein add huin).`);
+          await fetchLeads();
+        } else {
+          alert('Scraper Error: ' + (data.error || 'Server error'));
+        }
+      } catch (err) {
+        alert('Network error while scraping: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-crosshairs"></i> <span>Search Leads Now</span>`;
+        notice.classList.add('hidden');
+      }
+    }
+
+    async function updateLeadStatus(id, newStatus) {
+      try {
+        await fetch(`/api/leads/${id}`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ status: newStatus })
+        });
+        const lead = leadsData.find(l => l.id === id);
+        if (lead) lead.status = newStatus;
+        updateStats();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function deleteLead(id) {
+      if (!confirm('Kya aap waqai is lead ko delete karna chahte hain?')) return;
+      try {
+        await fetch(`/api/leads/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+        leadsData = leadsData.filter(l => l.id !== id);
+        updateStats();
+        filterTable();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function startAutoOutreachAll() {
+      if (!waConnected) {
+        alert('Pehle apna WhatsApp connect karein! (Top bar mein QR scan karein)');
+        openWhatsAppModal();
+        return;
+      }
+
+      const newLeads = leadsData.filter(l => l.status === 'New' && l.whatsapp);
+      if (newLeads.length === 0) {
+        alert('Koi naye leads nahi hain jinhe WhatsApp pitch bhejni ho!');
+        return;
+      }
+
+      if (!confirm(`Kya aap waqai ${newLeads.length} leads ko automated WhatsApp message bhejna chahte hain?`)) {
+        return;
+      }
+
+      await fetch('/api/whatsapp/auto-outreach', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          leadIds: newLeads.map(l => l.id),
+          delaySec: 30
+        })
+      });
+
+      alert('Auto-outreach shuru ho chuka hai! System har 30 seconds baad ek client ko personalized message bhejega aur replies ko AI handle karega.');
+      checkWhatsAppStatus();
+    }
+
+    async function stopAutoOutreach() {
+      await fetch('/api/whatsapp/stop-outreach', { method: 'POST', headers: getAuthHeaders() });
+      alert('Auto-outreach stop kar diya gaya hai.');
+      checkWhatsAppStatus();
+    }
+
+    function openPitchModal(leadId) {
+      currentLead = leadsData.find(l => l.id === leadId);
+      if (!currentLead) return;
+
+      document.getElementById('pitchTargetInfo').innerHTML = `
+        Target: <b class="text-white">${currentLead.name}</b> (${currentLead.contactPerson || 'Owner'}) &bull; ${currentLead.city}
+      `;
+
+      selectTemplate(1);
+      document.getElementById('pitchModal').classList.remove('hidden');
+    }
+
+    function closePitchModal() {
+      document.getElementById('pitchModal').classList.add('hidden');
+    }
+
+    function selectTemplate(idx) {
+      selectedTemplateIndex = idx;
+      [1, 2, 3].forEach(i => {
+        const btn = document.getElementById(`tplBtn${i}`);
+        if (i === idx) {
+          btn.className = 'p-2.5 rounded-xl border text-xs text-left font-medium transition bg-emerald-500/10 border-emerald-500/40 text-emerald-300';
+        } else {
+          btn.className = 'p-2.5 rounded-xl border border-slate-800 text-xs text-left font-medium transition hover:border-slate-700 text-slate-300';
+        }
+      });
+      generatePitchText();
+    }
+
+    function generatePitchText() {
+      if (!currentLead) return;
+      const ownerName = currentLead.contactPerson && currentLead.contactPerson !== 'Owner' ? currentLead.contactPerson : 'Bhai';
+      const bizName = currentLead.name || 'aapka business';
+      const myName = userSettings.yourName || 'Atif';
+      const agency = userSettings.agencyName || 'Xmaxify';
+
+      let text = '';
+      if (selectedTemplateIndex === 1) {
+        text = `Assalam-o-Alaikum ${ownerName}!\n\nMaine Google par aapka business "${bizName}" dekha. MashaAllah aapka kaam bohot behtareen hai aur clients ke reviews bhi achhe hain.\n\nLekin notice kiya ke aapki koi Official Website nahi bani hui, jiski wajah se ${currentLead.city || 'Pakistan'} mein aapke competitors rozana naye customers le rahe hain jo Google par search karte hain.\n\nHumne aapke business ke liye ek mobile-friendly website ka quick sample design kiya hai. Agar aap permit karein to kya main 2 minute ka short demo WhatsApp par share karoon?\n\nShukriya,\n${myName} | ${agency}`;
+      } else if (selectedTemplateIndex === 2) {
+        text = `Assalam-o-Alaikum ${ownerName} bhai!\n\nUmeed hai aap khairiyat se honge. Mera naam ${myName} hai from ${agency}.\n\nAaj kal har bada client direct Google par search kar ke WhatsApp ya Call karta hai. Humne "${bizName}" ke liye ek **FREE Homepage Concept Design** prepare kiya hai.\n\nAapko pehle koi payment nahi karni, aap pehle design check karein. Agar pasand aaye to batayein, main sample link share kar doon?\n\nJazakAllah!`;
+      } else if (selectedTemplateIndex === 3) {
+        text = `Assalam-o-Alaikum ${ownerName}!\n\nKya aap ${currentLead.city || 'apne sheher'} mein "${bizName}" ke liye direct online clients aur inquiries barhana chahte hain?\n\nGoogle par daily hazaron log aapki service search karte hain, lekin website na hone ki wajah se wo doosron ke paas chale jate hain. Hum aapke business ke liye modern, fast aur WhatsApp-integrated website set kar ke de rahe hain jahan se client sirf 1 click par aapke WhatsApp par message karega.\n\nHum complete milestone system pe kaam karte hain (50% upfront for domain/hosting setup, 50% after live approval).\n\nKya hum is par short call ya WhatsApp par baat kar sakte hain?`;
+      }
+
+      document.getElementById('pitchTextArea').value = text;
+    }
+
+    async function sendPitchDirectFromBot() {
+      if (!currentLead) return;
+      if (!waConnected) {
+        alert('WhatsApp connect nahi hai! Pehle QR scan karein.');
+        openWhatsAppModal();
+        return;
+      }
+
+      const text = document.getElementById('pitchTextArea').value;
+      const targetNumber = currentLead.whatsapp || currentLead.mobile;
+
+      try {
+        await fetch('/api/whatsapp/send', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ to: targetNumber, text })
+        });
+        updateLeadStatus(currentLead.id, 'Contacted');
+        alert('Message kamyabi se WhatsApp par send ho gaya!');
+        closePitchModal();
+        fetchLeads();
+      } catch (err) {
+        alert('Failed to send message: ' + err.message);
+      }
+    }
+
+    function openWhatsAppDirect() {
+      if (!currentLead) return;
+      const text = document.getElementById('pitchTextArea').value;
+      const num = currentLead.whatsapp || currentLead.mobile.replace(/[^0-9]/g, '');
+      const cleanNum = num.startsWith('0') ? '92' + num.substring(1) : num;
+      updateLeadStatus(currentLead.id, 'Contacted');
+      const waUrl = `https://wa.me/${cleanNum}?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
+      closePitchModal();
+      fetchLeads();
+    }
+
+    async function openChatsModal() {
+      document.getElementById('chatsModal').classList.remove('hidden');
+      await loadChats();
+    }
+    function closeChatsModal() {
+      document.getElementById('chatsModal').classList.add('hidden');
+    }
+
+    async function loadChats() {
+      try {
+        const res = await fetch('/api/whatsapp/chats', { headers: getAuthHeaders() });
+        allChats = await res.json();
+        renderChatThreads();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderChatThreads() {
+      const list = document.getElementById('chatThreadsList');
+      list.innerHTML = '';
+      const numbers = Object.keys(allChats);
+
+      if (numbers.length === 0) {
+        list.innerHTML = `<div class="p-6 text-center text-xs text-slate-500">Abhi tak koi chat nahi hai</div>`;
+        return;
+      }
+
+      numbers.forEach(num => {
+        const thread = allChats[num];
+        const lastMsg = thread[thread.length - 1];
+        const div = document.createElement('div');
+        div.className = `p-3 cursor-pointer hover:bg-slate-800/60 transition ${activeChatJid === num ? 'bg-slate-800' : ''}`;
+        div.onclick = () => selectChat(num);
+        div.innerHTML = `
+          <div class="font-bold text-xs text-white flex items-center justify-between">
+            <span>${num}</span>
+            <span class="text-[10px] text-slate-500">${lastMsg ? new Date(lastMsg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}</span>
+          </div>
+          <p class="text-[11px] text-slate-400 truncate mt-1">${lastMsg ? lastMsg.text : ''}</p>
+        `;
+        list.appendChild(div);
+      });
+
+      if (!activeChatJid && numbers.length > 0) {
+        selectChat(numbers[0]);
+      }
+    }
+
+    function selectChat(num) {
+      activeChatJid = num;
+      renderChatThreads();
+      const messagesContainer = document.getElementById('activeChatMessages');
+      const header = document.getElementById('activeChatHeader');
+      header.innerHTML = `<span>Chat with: <b class="text-white">${num}</b></span> <span class="text-emerald-400 font-mono text-[10px]">🤖 AI Auto-Negotiator Active</span>`;
+      messagesContainer.innerHTML = '';
+
+      const thread = allChats[num] || [];
+      thread.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = `flex ${msg.fromMe ? 'justify-end' : 'justify-start'}`;
+        div.innerHTML = `
+          <div class="${msg.fromMe ? 'chat-bubble-me' : 'chat-bubble-client'} max-w-sm p-3 text-xs shadow-md whitespace-pre-line leading-relaxed">
+            ${msg.text}
+            <div class="text-[9px] ${msg.fromMe ? 'text-emerald-200' : 'text-slate-500'} text-right mt-1">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+          </div>
+        `;
+        messagesContainer.appendChild(div);
+      });
+
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function sendManualChat() {
+      if (!activeChatJid) return;
+      const input = document.getElementById('manualChatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      await fetch('/api/whatsapp/send', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ to: activeChatJid, text })
+      });
+      await loadChats();
+      selectChat(activeChatJid);
+    }
+
+    function openWhatsAppModal() {
+      document.getElementById('waModal').classList.remove('hidden');
+      initiateWhatsAppConnect();
+    }
+    function closeWhatsAppModal() {
+      document.getElementById('waModal').classList.add('hidden');
+    }
+
+    function openPlaybook() {
+      document.getElementById('playbookModal').classList.remove('hidden');
+    }
+    function closePlaybook() {
+      document.getElementById('playbookModal').classList.add('hidden');
+    }
+
+    function openSettings() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>

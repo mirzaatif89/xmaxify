@@ -3,6 +3,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const crypto = require('crypto');
 
 const WhatsAppBot = require('./whatsapp_bot');
 const { handleIncomingMessage } = require('./ai_sales_agent');
@@ -15,16 +16,45 @@ const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 // Ensure files exist
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(LEADS_FILE)) fs.writeFileSync(LEADS_FILE, JSON.stringify([], null, 2));
-if (!fs.existsSync(SETTINGS_FILE)) {
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify({
-    yourName: 'Atif',
-    yourAgency: 'Digital Solutions',
-    yourWhatsApp: '923000000000',
-    advancePercentage: '50%',
-    defaultPackagePrice: '25,000 PKR',
-    bankDetails: 'Meezan Bank / JazzCash',
-    geminiApiKey: ''
-  }, null, 2));
+
+function loadSettings() {
+  try {
+    return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+  } catch (e) {
+    return {
+      adminUsername: 'admin',
+      adminPassword: 'xmaxify2026',
+      agencyName: 'Xmaxify',
+      yourName: 'Atif',
+      yourWhatsApp: '923000000000',
+      advancePercentage: '50%',
+      defaultPackagePrice: '25,000 PKR',
+      bankDetails: 'Meezan Bank / JazzCash',
+      geminiApiKey: ''
+    };
+  }
+}
+
+function saveSettings(settings) {
+  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8');
+}
+
+// Active session tokens
+const validTokens = new Set();
+function generateToken() {
+  const token = crypto.randomBytes(24).toString('hex');
+  validTokens.add(token);
+  return token;
+}
+
+function isAuthorized(req) {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return false;
+  const parts = authHeader.split(' ');
+  if (parts.length === 2 && parts[0] === 'Bearer') {
+    return validTokens.has(parts[1]);
+  }
+  return false;
 }
 
 // Initialize WhatsApp Bot
@@ -41,26 +71,6 @@ function loadLeads() {
 
 function saveLeads(leads) {
   fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2), 'utf8');
-}
-
-function loadSettings() {
-  try {
-    return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
-  } catch (e) {
-    return {
-      yourName: 'Atif',
-      yourAgency: 'Digital Solutions',
-      yourWhatsApp: '923000000000',
-      advancePercentage: '50%',
-      defaultPackagePrice: '25,000 PKR',
-      bankDetails: 'Meezan Bank / JazzCash',
-      geminiApiKey: ''
-    };
-  }
-}
-
-function saveSettings(settings) {
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8');
 }
 
 function fetchPage(targetUrl) {
@@ -208,7 +218,7 @@ async function runAutoOutreach(leadIds, delaySec = 30) {
 
   const settings = loadSettings();
   const myName = settings.yourName || 'Atif';
-  const agency = settings.yourAgency || 'Digital Solutions';
+  const agency = settings.agencyName || 'Xmaxify';
 
   for (const lead of targetLeads) {
     if (!autoOutreachActive) break;
@@ -216,14 +226,12 @@ async function runAutoOutreach(leadIds, delaySec = 30) {
     const ownerName = lead.contactPerson && lead.contactPerson !== 'Owner' ? lead.contactPerson : 'Bhai';
     const bizName = lead.name || 'aapka business';
     
-    // Natural Roman Urdu pitch
     const pitch = `Assalam-o-Alaikum ${ownerName}!\n\nMaine Google par aapka business "${bizName}" dekha. MashaAllah aapka kaam bohot behtareen hai aur clients ke reviews bhi achhe hain.\n\nLekin notice kiya ke aapki koi Official Website nahi bani hui, jiski wajah se ${lead.city || 'Pakistan'} mein aapke competitors rozana naye customers le rahe hain jo Google par search karte hain.\n\nHumne aapke business ke liye ek mobile-friendly website ka quick sample design kiya hai. Agar aap permit karein to kya main 2 minute ka short demo WhatsApp par share karoon?\n\nShukriya,\n${myName} | ${agency}`;
 
     try {
       autoOutreachStats.current = `${lead.name} (${lead.whatsapp})`;
       await bot.sendMessage(lead.whatsapp, pitch);
       
-      // Update status to Contacted
       const allLeads = loadLeads();
       const idx = allLeads.findIndex(l => l.id === lead.id);
       if (idx !== -1) {
@@ -233,7 +241,6 @@ async function runAutoOutreach(leadIds, delaySec = 30) {
       autoOutreachStats.sent++;
       console.log(`[Auto-Outreach] Sent pitch to ${lead.name} (${autoOutreachStats.sent}/${autoOutreachStats.total})`);
 
-      // Humanized jitter delay (e.g. delaySec +/- 5 seconds)
       const waitTime = Math.max(15, delaySec + Math.floor(Math.random() * 10 - 5)) * 1000;
       await new Promise(r => setTimeout(r, waitTime));
     } catch (err) {
@@ -252,7 +259,7 @@ const server = http.createServer((req, res) => {
 
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
@@ -260,7 +267,48 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // API Routes
+  // Auth Endpoints
+  if (pathname === '/api/auth/login' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const { username, password } = JSON.parse(body || '{}');
+        const settings = loadSettings();
+        if (
+          username === (settings.adminUsername || 'admin') &&
+          password === (settings.adminPassword || 'xmaxify2026')
+        ) {
+          const token = generateToken();
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: true, token }));
+        } else {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ success: false, error: 'Invalid username or password' }));
+        }
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  if (pathname === '/api/auth/check' && req.method === 'GET') {
+    const authed = isAuthorized(req);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ authenticated: authed }));
+    return;
+  }
+
+  // Protected API Endpoints (Require Bearer token)
+  const isProtectedApi = pathname.startsWith('/api/') && pathname !== '/api/auth/login' && pathname !== '/api/auth/check';
+  if (isProtectedApi && !isAuthorized(req)) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Unauthorized. Please login at /login' }));
+    return;
+  }
+
   if (pathname === '/api/leads' && req.method === 'GET') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(loadLeads()));
@@ -452,14 +500,23 @@ const server = http.createServer((req, res) => {
     const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
     res.writeHead(200, {
       'Content-Type': 'text/csv; charset=utf-8',
-      'Content-Disposition': 'attachment; filename="pakistan_website_leads.csv"'
+      'Content-Disposition': 'attachment; filename="xmaxify_website_leads.csv"'
     });
     res.end(csvContent);
     return;
   }
 
-  // Serve Static UI
-  let filePath = path.join(__dirname, 'public', pathname === '/' ? 'index.html' : pathname);
+  // Routing Pages
+  let targetFile = 'index.html';
+  if (pathname === '/login') {
+    targetFile = 'login.html';
+  } else if (pathname === '/admin') {
+    targetFile = 'admin.html';
+  } else if (pathname !== '/') {
+    targetFile = pathname.startsWith('/') ? pathname.substring(1) : pathname;
+  }
+
+  let filePath = path.join(__dirname, 'public', targetFile);
   fs.readFile(filePath, (err, content) => {
     if (err) {
       if (err.code === 'ENOENT') {
@@ -491,7 +548,8 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   console.log(`====================================================`);
-  console.log(`🇵🇰 Pakistan Client Hunter + WhatsApp AI is running!`);
-  console.log(`🌐 Dashboard URL: http://localhost:${PORT}`);
+  console.log(`🚀 Xmaxify Public Website: http://localhost:${PORT}`);
+  console.log(`🔒 Xmaxify Admin Panel:    http://localhost:${PORT}/admin`);
+  console.log(`🔑 Admin Login:            http://localhost:${PORT}/login`);
   console.log(`====================================================`);
 });
