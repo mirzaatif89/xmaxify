@@ -1,0 +1,72 @@
+[
+  {
+    "id": "242599",
+    "name": "Wadaan Enterprises",
+    "contactPerson": "Salman",
+    "mobile": "0342-2178717",
+    "whatsapp": "923422178717",
+    "address": "Office 12, Gulberg III, Lahore, Punjab",
+    "city": "Lahore",
+    "category": "estate-agents",
+    "hasWebsite": false,
+    "url": "https://www.businesslist.pk/company/242599/wadaan-enterprises",
+    "status": "New",
+    "scrapedAt": "2026-11-20T08:30:00.000Z"
+  },
+  {
+    "id": "241571",
+    "name": "Global Village Media & Consultants",
+    "contactPerson": "Muhammad Haroon Nagra",
+    "mobile": "0322-4265042",
+    "whatsapp": "923224265042",
+    "address": "Model Town Link Road, Lahore",
+    "city": "Lahore",
+    "category": "estate-agents",
+    "hasWebsite": false,
+    "url": "https://www.businesslist.pk/company/241571/global-village-all-media-advertiser",
+    "status": "New",
+    "scrapedAt": "2026-11-20T08:30:00.000Z"
+  },
+  {
+    "id": "244574",
+    "name": "Haseeb Motor Training Institute",
+    "contactPerson": "Kashif Zaidi",
+    "mobile": "0300-9423142",
+    "whatsapp": "923009423142",
+    "address": "Ferozepur Road, Lahore",
+    "city": "Lahore",
+    "category": "vehicle-services",
+    "hasWebsite": false,
+    "url": "https://www.businesslist.pk/company/244574/haseeb-driving-school",
+    "status": "New",
+    "scrapedAt": "2026-11-20T08:30:00.000Z"
+  },
+  {
+    "id": "250843",
+    "name": "Emlak Real Estate Consultants",
+    "contactPerson": "Malik Tariq",
+    "mobile": "0309-9427964",
+    "whatsapp": "923099427964",
+    "address": "DHA Phase 6, Sector C, Lahore",
+    "city": "Lahore",
+    "category": "estate-agents",
+    "hasWebsite": false,
+    "url": "https://www.businesslist.pk/company/250843/emlak-estate",
+    "status": "New",
+    "scrapedAt": "2026-11-20T08:30:00.000Z"
+  },
+  {
+    "id": "244632",
+    "name": "Executive Property & Builders Group",
+    "contactPerson": "Rana Farooq",
+    "mobile": "0302-8118161",
+    "whatsapp": "923028118161",
+    "address": "Sector F-10 Markaz, Islamabad",
+    "city": "Islamabad",
+    "category": "estate-agents",
+    "hasWebsite": false,
+    "url": "https://www.businesslist.pk/company/244632/executive-real-estate-group",
+    "status": "New",
+    "scrapedAt": "2026-11-20T08:30:00.000Z"
+  }
+]
