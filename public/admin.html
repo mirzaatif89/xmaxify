@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Xmaxify Admin Panel | WhatsApp AI & Client Hunter</title>
+  <title>XMAXIFY Admin Panel | WhatsApp AI & Client Hunter</title>
+  <link rel="icon" type="image/png" href="/logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
-    .glass-card { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .glass-input { background: rgba(11, 15, 25, 0.8); border: 1px solid rgba(255, 255, 255, 0.12); }
-    .chat-bubble-me { background: #065f46; color: #ecfdf5; border-radius: 1rem 1rem 0 1rem; }
-    .chat-bubble-client { background: #1e293b; color: #f8fafc; border-radius: 1rem 1rem 1rem 0; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #060d1a; color: #f1f5f9; }
+    .glass-card { background: rgba(10, 24, 48, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(0, 168, 107, 0.15); }
+    .glass-input { background: rgba(6, 13, 26, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); }
+    .chat-bubble-me { background: #008753; color: #ecfdf5; border-radius: 1rem 1rem 0 1rem; }
+    .chat-bubble-client { background: #0e2448; color: #f8fafc; border-radius: 1rem 1rem 1rem 0; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -22,15 +23,15 @@
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
       <!-- Logo -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20">
-          X
+        <div class="bg-white p-1 rounded-xl shadow-lg shadow-emerald-500/20">
+          <img src="/logo.png" alt="XMAXIFY Logo" class="h-9 w-auto object-contain">
         </div>
         <div>
-          <h1 class="text-lg font-bold text-white flex items-center gap-2">
-            Xmaxify Admin Control
-            <span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono font-medium">Auto-Pilot Active</span>
+          <h1 class="text-lg font-black text-white flex items-center gap-2">
+            XMAXIFY Admin Control
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-mono font-bold">Auto-Pilot</span>
           </h1>
-          <p class="text-xs text-slate-400">Lead Generation & Automated WhatsApp Sales Negotiation for 50% Advance</p>
+          <p class="text-xs text-slate-400">MAXIMIZE YOUR POTENTIAL &bull; WhatsApp AI & Pakistan Client Hunter</p>
         </div>
       </div>
 
@@ -59,12 +60,12 @@
         </button>
 
         <!-- Settings -->
-        <button onclick="openSettings()" class="px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl border border-slate-700 flex items-center gap-1.5 transition">
+        <button onclick="openSettings()" class="px-3 py-1.5 text-xs font-semibold bg-[#0e2448] hover:bg-[#142e56] text-slate-200 rounded-xl border border-slate-700 flex items-center gap-1.5 transition">
           <i class="fa-solid fa-gear"></i> Settings
         </button>
 
         <!-- View Public Site -->
-        <a href="/" target="_blank" class="px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl border border-slate-700 flex items-center gap-1.5 transition">
+        <a href="/" target="_blank" class="px-3 py-1.5 text-xs font-semibold bg-[#0e2448] hover:bg-[#142e56] text-emerald-300 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 transition">
           <i class="fa-solid fa-globe"></i> View Site
         </a>
 
@@ -78,7 +79,7 @@
 
   <!-- Auto-Outreach Banner (Visible during outreach) -->
   <div id="outreachBanner" class="hidden max-w-7xl mx-auto w-full px-6 pt-4">
-    <div class="p-3.5 bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/40 rounded-2xl flex items-center justify-between text-xs text-emerald-200">
+    <div class="p-3.5 bg-gradient-to-r from-emerald-950/80 to-[#071324] border border-emerald-500/40 rounded-2xl flex items-center justify-between text-xs text-emerald-200">
       <div class="flex items-center gap-3">
         <i class="fa-solid fa-paper-plane text-emerald-400 fa-bounce"></i>
         <span>
@@ -147,11 +148,11 @@
           </p>
         </div>
         <div class="flex items-center gap-3">
-          <label class="flex items-center gap-2 text-xs text-slate-300 bg-slate-900/60 border border-slate-800 px-3 py-2 rounded-xl cursor-pointer">
+          <label class="flex items-center gap-2 text-xs text-slate-300 bg-[#091528] border border-slate-800 px-3 py-2 rounded-xl cursor-pointer">
             <input type="checkbox" id="onlyNoWebsite" checked class="accent-emerald-500 rounded w-4 h-4">
             <span>Sirf <b>Baghair Website</b> wale</span>
           </label>
-          <button onclick="startAutoOutreachAll()" class="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-500/20 flex items-center gap-2 transition">
+          <button onclick="startAutoOutreachAll()" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-emerald-500/20 flex items-center gap-2 transition">
             <i class="fa-solid fa-bolt"></i> Auto-Pitch All New Leads
           </button>
         </div>
@@ -208,7 +209,7 @@
 
         <!-- Submit Button -->
         <div class="flex items-end">
-          <button type="submit" id="scrapeBtn" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold py-2.5 px-4 rounded-xl shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition disabled:opacity-50">
+          <button type="submit" id="scrapeBtn" class="w-full bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black py-2.5 px-4 rounded-xl shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition disabled:opacity-50">
             <i class="fa-solid fa-crosshairs"></i>
             <span>Search Leads Now</span>
           </button>
@@ -225,7 +226,7 @@
 
     <!-- Leads Management & CRM Table -->
     <div class="glass-card rounded-2xl overflow-hidden shadow-xl">
-      <div class="px-6 py-4 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-900/40">
+      <div class="px-6 py-4 border-b border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#071324]/60">
         <div>
           <h3 class="text-base font-bold text-white flex items-center gap-2">
             <i class="fa-solid fa-list-check text-blue-400"></i>
@@ -252,7 +253,7 @@
       <!-- Table -->
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-slate-900/80 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
+          <thead class="bg-[#071324] text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
             <tr>
               <th class="py-3.5 px-4 font-semibold">Business & Owner</th>
               <th class="py-3.5 px-4 font-semibold">City / Location</th>
@@ -263,7 +264,6 @@
             </tr>
           </thead>
           <tbody id="leadsTableBody" class="divide-y divide-slate-800">
-            <!-- Populated via JS -->
           </tbody>
         </table>
       </div>
@@ -303,7 +303,7 @@
       </div>
 
       <!-- Instructions -->
-      <div class="text-left text-xs text-slate-300 space-y-1.5 bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+      <div class="text-left text-xs text-slate-300 space-y-1.5 bg-[#091528] p-3.5 rounded-xl border border-slate-800">
         <p class="font-bold text-emerald-400 mb-1">Apna WhatsApp Kaise Connect Karein:</p>
         <p>1. Apne phone mein <b>WhatsApp</b> open karein.</p>
         <p>2. Settings ➔ <b>Linked Devices</b> par click karein.</p>
@@ -312,7 +312,7 @@
 
       <!-- Actions -->
       <div class="flex gap-2 pt-2">
-        <button onclick="initiateWhatsAppConnect()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-emerald-600/30 transition">
+        <button onclick="initiateWhatsAppConnect()" class="flex-1 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
           <i class="fa-solid fa-arrows-rotate"></i> Refresh QR Code
         </button>
         <button onclick="disconnectWhatsApp()" class="px-4 py-2.5 bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/30 font-bold text-xs rounded-xl transition">
@@ -325,8 +325,7 @@
   <!-- Live WhatsApp Chats Drawer Modal -->
   <div id="chatsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="glass-card max-w-4xl w-full h-[85vh] rounded-2xl shadow-2xl border border-slate-700 flex flex-col overflow-hidden">
-      <!-- Header -->
-      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-[#071324]">
         <div class="flex items-center gap-2">
           <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
           <h3 class="text-sm font-bold text-white">Live WhatsApp Conversations & AI Log</h3>
@@ -336,11 +335,10 @@
         </button>
       </div>
 
-      <!-- Main Chat Body -->
       <div class="flex-1 flex overflow-hidden">
-        <div id="chatThreadsList" class="w-1/3 border-r border-slate-800 overflow-y-auto divide-y divide-slate-800/60 bg-slate-900/40">
+        <div id="chatThreadsList" class="w-1/3 border-r border-slate-800 overflow-y-auto divide-y divide-slate-800/60 bg-[#071324]/50">
         </div>
-        <div class="flex-1 flex flex-col bg-slate-950/50">
+        <div class="flex-1 flex flex-col bg-[#050b16]">
           <div id="activeChatHeader" class="p-3 border-b border-slate-800 text-xs font-bold text-slate-300 flex items-center justify-between">
             <span>Select a conversation from left</span>
           </div>
@@ -348,7 +346,7 @@
           </div>
           <div class="p-3 border-t border-slate-800 flex gap-2">
             <input type="text" id="manualChatInput" placeholder="Type a message or let AI handle..." class="glass-input flex-1 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
-            <button onclick="sendManualChat()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition">
+            <button onclick="sendManualChat()" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs rounded-xl transition">
               <i class="fa-solid fa-paper-plane"></i> Send
             </button>
           </div>
@@ -400,10 +398,10 @@
       </div>
 
       <div class="flex items-center justify-end gap-3 pt-2">
-        <button onclick="sendPitchDirectFromBot()" id="sendBotBtn" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-emerald-600/30 flex items-center gap-2 transition">
+        <button onclick="sendPitchDirectFromBot()" id="sendBotBtn" class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs rounded-xl shadow-lg transition">
           <i class="fa-solid fa-robot"></i> Send via Connected WhatsApp
         </button>
-        <button onclick="openWhatsAppDirect()" id="openWaBtn" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 flex items-center gap-2 transition">
+        <button onclick="openWhatsAppDirect()" id="openWaBtn" class="px-4 py-2.5 bg-[#0e2448] hover:bg-[#142e56] text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 flex items-center gap-2 transition">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in WhatsApp Web
         </button>
       </div>
@@ -413,7 +411,7 @@
   <!-- 50% Advance Playbook Modal -->
   <div id="playbookModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="glass-card max-w-3xl w-full rounded-2xl p-6 shadow-2xl border border-slate-700 max-h-[85vh] overflow-y-auto space-y-4">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800 sticky top-0 bg-slate-900/90 py-1">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 sticky top-0 bg-[#071324] py-1">
         <div>
           <h3 class="text-base font-bold text-white flex items-center gap-2">
             <i class="fa-solid fa-handshake-simple text-amber-400"></i>
@@ -427,7 +425,7 @@
       </div>
 
       <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
-        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
+        <div class="p-3.5 rounded-xl bg-[#091528] border border-slate-800">
           <h4 class="font-bold text-amber-300 text-sm mb-1">1. Pehle Value, Phir Paise (The Golden Rule)</h4>
           <p>Pakistani client ko shuru mein kabhi na bolein ke "25,000 lagenge pehle advance do". Jab client WhatsApp par aaye, unhe bolein:</p>
           <div class="p-2.5 bg-black/40 rounded-lg text-emerald-300 font-mono text-[11px] mt-2 border border-emerald-900/40">
@@ -435,7 +433,7 @@
           </div>
         </div>
 
-        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
+        <div class="p-3.5 rounded-xl bg-[#091528] border border-slate-800">
           <h4 class="font-bold text-blue-300 text-sm mb-1">2. 50% Advance ko Frame Kaise Karein?</h4>
           <p>Client ko batayein ke 50% advance unki apni cheezon ke liye zaroori hai:</p>
           <div class="p-2.5 bg-black/40 rounded-lg text-blue-300 font-mono text-[11px] mt-2 border border-blue-900/40">
@@ -471,7 +469,7 @@
 
         <div>
           <label class="block text-xs font-medium text-slate-300 mb-1">Agency Name</label>
-          <input type="text" id="cfgAgency" class="glass-input w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="Xmaxify">
+          <input type="text" id="cfgAgency" class="glass-input w-full rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="XMAXIFY">
         </div>
 
         <div>
@@ -491,7 +489,7 @@
       </div>
 
       <div class="flex justify-end gap-2 pt-2">
-        <button onclick="saveSettings()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition">
+        <button onclick="saveSettings()" class="w-full py-2.5 bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs rounded-xl transition">
           Save Settings
         </button>
       </div>
@@ -561,7 +559,7 @@
           userSettings = await res.json();
           document.getElementById('cfgUsername').value = userSettings.adminUsername || 'admin';
           document.getElementById('cfgPassword').value = userSettings.adminPassword || 'xmaxify2026';
-          document.getElementById('cfgAgency').value = userSettings.agencyName || 'Xmaxify';
+          document.getElementById('cfgAgency').value = userSettings.agencyName || 'XMAXIFY';
           document.getElementById('cfgWhatsApp').value = userSettings.yourWhatsApp || '';
           document.getElementById('cfgPrice').value = userSettings.defaultPackagePrice || '';
           document.getElementById('cfgApiKey').value = userSettings.geminiApiKey || '';
@@ -636,7 +634,7 @@
           aiBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-1.5 border transition bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
           aiText.innerText = 'AI Auto-Reply: ON';
         } else {
-          aiBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-1.5 border transition bg-slate-800 text-slate-400 border-slate-700';
+          aiBtn.className = 'px-3 py-1.5 text-xs font-semibold rounded-xl flex items-center gap-1.5 border transition bg-[#0e2448] text-slate-400 border-slate-700';
           aiText.innerText = 'AI Auto-Reply: OFF';
         }
 
@@ -902,7 +900,7 @@
       const ownerName = currentLead.contactPerson && currentLead.contactPerson !== 'Owner' ? currentLead.contactPerson : 'Bhai';
       const bizName = currentLead.name || 'aapka business';
       const myName = userSettings.yourName || 'Atif';
-      const agency = userSettings.agencyName || 'Xmaxify';
+      const agency = userSettings.agencyName || 'XMAXIFY';
 
       let text = '';
       if (selectedTemplateIndex === 1) {
